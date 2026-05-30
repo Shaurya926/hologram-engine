@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+@import "tailwindcss";
+
+:root {
+  --cyan: #00f5ff;
+  --cyan-dim: #00a8b5;
+  --blue: #0066ff;
+  --white: #ffffff;
+  --bg: #040810;
+  --panel: rgba(0, 245, 255, 0.04);
+  --border: rgba(0, 245, 255, 0.15);
+  --glow: 0 0 20px rgba(0, 245, 255, 0.4), 0 0 60px rgba(0, 245, 255, 0.1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Share Tech Mono', monospace;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+canvas { display: block; }
+
+.font-display { font-family: 'Orbitron', sans-serif; }
+.font-mono { font-family: 'Share Tech Mono', monospace; }
+
+/* Scanlines overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Glow text */
+.glow-text {
+  color: var(--cyan);
+  text-shadow: 0 0 10px var(--cyan), 0 0 30px rgba(0, 245, 255, 0.5);
+}
+
+/* Panel styles */
+.holo-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+
+/* Button */
+.holo-btn {
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.holo-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--cyan);
+  transform: translateX(-100%);
+  transition: transform 0.2s;
+  z-index: -1;
+}
+
+.holo-btn:hover {
+  color: var(--bg);
+  box-shadow: var(--glow);
+}
+
+.holo-btn:hover::before {
+  transform: translateX(0);
+}
+
+.holo-btn.active {
+  background: rgba(0, 245, 255, 0.15);
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.3);
+}
+
+/* Slider */
+.holo-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+}
+.holo-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--cyan);
+  cursor: pointer;
+  border-radius: 0;
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+/* Corner brackets */
+.corner-bracket {
+  position: relative;
+}
+.corner-bracket::before,
+.corner-bracket::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--cyan);
+  border-style: solid;
+}
+.corner-bracket::before {
+  top: 0; left: 0;
+  border-width: 1px 0 0 1px;
+}
+.corner-bracket::after {
+  bottom: 0; right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.4; }
+  94% { opacity: 1; }
+  96% { opacity: 0.6; }
+  97% { opacity: 1; }
+}
+
+.animate-flicker { animation: flicker 5s infinite; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
